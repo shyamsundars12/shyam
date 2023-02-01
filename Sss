@@ -28,3 +28,74 @@ echo $user['uname']; ?>" required>
             </div>
 </body>
 </html>
+<?php
+
+if (isset($_POST["update"])) {
+    // Get the form data
+session_start();
+$user=$_SESSION['user'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    // Connect to the database
+    $conn = mysqli_connect('localhost', 'root', '', 'waste');
+
+    // Check connection
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    // Update the profile in the database
+$sql = "UPDATE users SET uname='$name', email='$email', password='$password' WHERE email='$email'";
+    if (mysqli_query($conn, $sql)) {
+        // Redirect to the profile page
+echo"updated successfully";
+        header("Location: profile.php");
+    } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    }
+
+    // Close the connection
+    mysqli_close($conn);
+}
+?>
+.container {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+input[type="tel"],
+input[type="text"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+input[type="submit"] {
+  background-color: green;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
